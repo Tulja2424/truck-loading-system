@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Warehouse Sign Up</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body>
+    <div class="flex items-center justify-center min-h-screen p-4">
+        <div class="w-full max-w-sm p-6">
+            <h1 class="text-xl font-bold mb-6 text-center">Warehouse User Sign Up</h1>
+
+            <form method="post" action="/warehouse-signup" class="space-y-3">
+
+                <!-- Name (only letters allowed) -->
+                <input placeholder="Name" type="text" name="name" required
+                pattern="[A-Za-z ]+"
+                title="Name should contain only letters"
+                class="w-full px-3 py-2 border border-gray-300">
+
+                <!-- Password (minimum 6 characters) -->
+                <input placeholder="Password" type="password" name="password" required
+                minlength="6"
+                title="Password must be at least 6 characters"
+                class="w-full px-3 py-2 border border-gray-300">
+
+                <!-- License (letters and numbers allowed) -->
+                <input placeholder="License" type="text" name="license" required
+                pattern="[A-Za-z0-9]+"
+                title="License should contain letters or numbers only"
+                class="w-full px-3 py-2 border border-gray-300">
+
+                <!-- Contact (only numbers, 10 digits) -->
+                <input placeholder="Contact" type="tel" name="contact" required
+                pattern="[0-9]{10}"
+                title="Enter a valid 10 digit phone number"
+                class="w-full px-3 py-2 border border-gray-300">
+
+                <!-- Address (at least 1 character) -->
+                <input placeholder="Address" type="text" name="address" required
+                minlength="1"
+                title="Address must be at least 1 character"
+                class="w-full px-3 py-2 border border-gray-300">
+
+                <button type="submit" class="w-full py-2 bg-blue-600 text-white font-medium mt-4 hover:bg-blue-700">
+                    Sign Up
+                </button>
+
+                <button type="button" onclick="window.location.href='/login'" 
+                class="w-full py-2 bg-blue-600 text-white font-medium mt-4 hover:bg-blue-700">
+                    Login
+                </button>
+
+                <button type="button" onclick="window.location.href='/'" 
+                class="w-full py-2 bg-gray-500 text-white font-medium hover:bg-gray-600">
+                    Back
+                </button>
+
+            </form>
+        </div>
+    </div>
+</body>
+</html>

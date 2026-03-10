@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Trucks</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gray-100 min-h-screen py-10">
+
+    <div class="max-w-5xl mx-auto px-4">
+        <!-- Page Heading -->
+        <div class="flex items-center justify-between mb-6">
+        <h1 class="text-3xl font-bold text-gray-800 mb-8">
+            🚚 All Truck Details
+        </h1>
+        <button type="button" onclick="window.location.href='/profile-dealer/<%= dealer._id %>'" class=" px-5 py-2 bg-gray-500 rounded-lg text-white font-medium hover:bg-gray-600">Back</button>
+    </div>
+        <!-- Truck List -->
+        <% if (dealer.trucks.length === 0) { %>
+            <div class="bg-white p-8 rounded-xl shadow text-center">
+                <p class="text-gray-500 text-lg">
+                    No trucks are available at the moment.
+                </p>
+            </div>
+        <% } else { %>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <% dealer.trucks.forEach((truck,index) => { %>
+                    <div class="bg-white rounded-xl shadow hover:shadow-lg transition p-6">
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="text-xl font-semibold text-blue-600">
+                                Truck <%= index + 1 %>
+                            </h3>
+
+                            <div class="flex gap-3">
+                                <button 
+                                    onclick="location.href='/edit-truck/<%= dealer._id %>/<%= truck._id %>'"
+                                    class="text-blue-500 hover:underline">
+                                    Edit
+                                </button>
+
+                                <button 
+                                    onclick="location.href='/delete/<%= dealer._id %>/<%= truck._id %>'"
+                                    class="text-red-500 hover:underline">
+                                    Delete
+                                </button>
+                            </div>
+                        </div>
+                        <div class="space-y-2 text-gray-700">
+                            <p>
+                                <span class="font-medium">Model:</span><%= truck.model %>
+                            </p>
+                            <p>
+                                <span class="font-medium">Registration Number:</span><%= truck.number %>
+                            </p>
+                            <p>
+                                <span class="font-medium">Capacity:</span><%= truck.capacity %>
+                            </p>
+                            <p>
+                                <span class="font-medium">Cost (per km):</span><%= truck.cost_km %>
+                            </p>
+                            <p>
+                                <span class="font-medium">CO2 (per km):</span><%= truck.co2_km %>
+                            </p>
+                            <p>
+                                <span class="font-medium">Cities Covered:</span><%= truck.cities.join(', ') %>
+                            </p>
+                        </div>
+                        
+                    </div>
+                <% }); %>
+            </div>
+        <% } %>
+    </div>
+
+</body>
+</html>

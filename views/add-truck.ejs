@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Truck Dealer Sign Up</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body>
+    <div class="flex items-center justify-center min-h-screen p-4">
+        <div class="w-full max-w-sm p-6">
+            <h1 class="text-xl font-bold mb-6 text-center">Add Truck</h1>
+            <form method="post" action="/add-truck/<%= id%>" class="space-y-3">
+                <input placeholder="model" type="text" name="model" required class="w-full px-3 py-2 border border-gray-300">
+                <input placeholder="registration number" type="text" name="number" required class="w-full px-3 py-2 border border-gray-300">
+                <input placeholder="capacity" type="number" name="capacity" required class="w-full px-3 py-2 border border-gray-300">
+                <input placeholder="cost(per km)" type="number" name="cost_km" step="any" required class="w-full px-3 py-2 border border-gray-300">
+                <input placeholder="CO2(per km)" type="number" name="co2_km" step="any" required class="w-full px-3 py-2 border border-gray-300">
+                <input placeholder="cities covered (comma separated)" 
+                    type="text" 
+                    name="cities" 
+                    pattern="^[A-Za-z]+(,\s?[A-Za-z]+)*$"
+                    title="Enter city names separated by commas (example: mumbai, surat, dhanbad)"
+                    required 
+                    class="w-full px-3 py-2 border border-gray-300">
+                <button type="submit" class="w-full py-2 bg-blue-600 text-white font-medium mt-4 hover:bg-blue-700">Submit</button>
+                <button type="button" onclick="window.location.href='/profile-dealer/<%= id %>'" class="w-full py-2 bg-gray-500 text-white font-medium hover:bg-gray-600">Back</button>
+            </form>
+        </div>
+    </div>
+</body>

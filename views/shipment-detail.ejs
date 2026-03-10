@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shipment Detail</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-blue-50 min-h-screen p-6">
+
+<div class="max-w-6xl mx-auto">
+
+    <!-- Header -->
+    <div class="flex items-center justify-between mb-4">
+        <h2 class="text-2xl font-semibold text-blue-700">Shipment Detail</h2>
+
+        <button
+            type="button"
+            onclick="window.location.href='/add-shipment/<%= shipment.warehouse_id._id %>'"
+            class="underline text-gray-600 hover:text-black transition"
+        >
+            Back
+        </button>
+    </div>
+
+    <!-- Shipment Detail -->
+    <div class="bg-white p-6 rounded-lg shadow mb-8 border-l-4 border-blue-600">
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-gray-700">
+            <p><span class="font-medium">Shipment ID:</span> <%= shipment._id %></p>
+            <p><span class="font-medium">Weight:</span> <%= shipment.weight %></p>
+            <p><span class="font-medium">Boxes:</span> <%= shipment.boxes %></p>
+            <p><span class="font-medium">Source:</span> <%= shipment.source %></p>
+            <p><span class="font-medium">Destination:</span> <%= shipment.destination %></p>
+            <p>
+                <span class="font-medium">Timeline:</span>
+                <%= shipment.start?.toDateString().slice(4,15) %>
+                –
+                <%= shipment.end?.toDateString().slice(4,15) %>
+            </p>
+        </div>
+    </div>
+
+    <!-- Available Trucks -->
+    <div class="bg-white p-6 rounded-lg shadow border-l-4 border-blue-600">
+        <h3 class="text-2xl font-semibold mb-6 text-blue-700">
+            Available Trucks
+        </h3>
+
+        <% if (trucks.length === 0) { %>
+            <p class="text-gray-500">No available trucks found.</p>
+        <% } else { %>
+
+        <div class="
+            grid
+            grid-cols-1
+            sm:grid-cols-2
+            lg:grid-cols-3
+            gap-6
+            auto-rows-fr
+        ">
+
+            <% trucks.forEach(truck => { %>
+
+            <!-- CARD -->
+            <div class="
+                border border-blue-100
+                rounded-lg
+                p-4
+                hover:shadow-md
+                transition
+                flex
+                flex-col
+                justify-between
+                min-h-[260px]
+            ">
+
+                <div class="space-y-1 text-gray-700">
+                    <p><span class="font-medium">Model:</span> <%= truck.model %></p>
+                    <p><span class="font-medium">Truck Number:</span> <%= truck.number %></p>
+                    <p><span class="font-medium">Cost/km:</span> ₹<%= truck.cost_km %></p>
+                    <p><span class="font-medium">Dealer:</span> <%= truck.dealer_id?.name || 'N/A' %></p>
+                    <p><span class="font-medium">Contact:</span> <%= truck.dealer_id?.contact || 'N/A' %></p>
+                </div>
+
+                <% 
+                    const alreadyRequested = requests.some(
+                        r => r.truck_id?.toString() === truck._id.toString()
+                    );
+                %>
+
+                <form method="POST" action="/create-request" class="mt-1">
+                    <input type="hidden" name="truckid" value="<%= truck._id %>">
+                    <input type="hidden" name="shipmentid" value="<%= shipment._id %>">
+                    <input type="hidden" name="dealerid" value="<%= truck.dealer_id?._id %>">
+                    <input type="hidden" name="warehouseid" value="<%= shipment.warehouse_id._id %>">
+
+                    <button
+                        type="submit"
+                        <%= alreadyRequested ? 'disabled' : '' %>
+                        class="
+                            w-full py-1.5 rounded font-medium text-white text-sm
+                            <%= alreadyRequested
+                                ? 'bg-gray-400 cursor-not-allowed'
+                                : 'bg-blue-600 hover:bg-blue-700' %>
+                        ">
+                        <%= alreadyRequested ? 'Requested' : 'Request' %>
+                    </button>
+                </form>
+
+            </div>
+            <% }) %>
+        </div>
+
+        <% } %>
+    </div>
+</div>
+
+</body>
+</html>
