@@ -3,7 +3,7 @@ const path = require('path');
 const app = express();
 
 const connectDB = require('./config/db');
-connectDB();
+
 
 const truckDealer=require('./models/dealer');
 const truckModel=require('./models/truck');
@@ -441,6 +441,8 @@ app.post('/edit-truck/:dealerid/:truckid', async(req,res)=>{
 
     res.redirect(`/view-trucks/${dealerid}`);
 });
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+connectDB().then(() => {
+  app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
+  });
 });
