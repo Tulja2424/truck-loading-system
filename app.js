@@ -10,7 +10,7 @@ const shipmentModel=require('./models/shipment');
 const requestModel=require('./models/request');
 const PORT = process.env.PORT || 3000;
 
-app.use(cookieParser());
+app.use(cookieParser(process.env.SECRET_KEY));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
@@ -81,7 +81,7 @@ app.post('/login', async (req, res) => {
     if (user) {
         bcrypt.compare(password, user.password, (err, result) => {
             if (result) {
-                let token = jwt.sign({ license: user.license }, "somesecretkey");
+                let token = jwt.sign({ license: user.license },process.env.JWT_SECRET);
                 res.cookie('token', token);
                 return res.redirect(`/profile-dealer/${user._id}`);
             } else {
@@ -96,7 +96,7 @@ app.post('/login', async (req, res) => {
     if (user) {
         bcrypt.compare(password, user.password, (err, result) => {
             if (result) {
-                let token = jwt.sign({ license: user.license }, "somesecretkey");
+                let token = jwt.sign({ license: user.license },process.env.JWT_SECRET);
                 res.cookie('token', token);
                 return res.redirect(`/profile-warehouse/${user._id}`);
             } else {
@@ -214,7 +214,7 @@ app.get('/add-shipment/:warehouseid', async (req, res) => {
         })
         .populate('shipment_id');
 
-    // ✅ REMOVE bad old records
+    // REMOVE bad old records
     requests = requests.filter(r => r.shipment_id);
 
     res.render('add-shipment', {
@@ -229,7 +229,7 @@ app.post('/add-shipment/:warehouseid', async (req, res) => {
     const { weight, boxes, destination, source, start,end } = req.body;
     const n_source = source.charAt(0).toUpperCase() + source.slice(1).toLowerCase();
     const n_destination = destination.charAt(0).toUpperCase() + destination.slice(1).toLowerCase();
-    // 🔹 Create shipment
+    //Create shipment
     const shipment = new shipmentModel({
         warehouse_id: warehouseid,
         weight,
@@ -242,7 +242,7 @@ app.post('/add-shipment/:warehouseid', async (req, res) => {
     });
     await shipment.save();
 
-    // 🔹 Create request (ONLY warehouse + status)
+    // Create request (ONLY warehouse + status)
     const request = new requestModel({
         warehouse_id: warehouseid,
         shipment_id: shipment._id,
@@ -252,13 +252,13 @@ app.post('/add-shipment/:warehouseid', async (req, res) => {
     });
     await request.save();
 
-    // 🔹 Push shipment into warehouse
+    // Push shipment into warehouse
     await warehouseUser.findByIdAndUpdate(
         warehouseid,
         { $push: { shipments: shipment._id } }
     );
 
-    // 🔹 Redirect to GET
+    // Redirect to GET
     res.redirect(`/add-shipment/${warehouseid}`);
 });
 
@@ -327,7 +327,7 @@ app.post('/create-request', async (req, res) => {
 
     const truck = await truckModel.findById(truckid);
 
-    // 🔹 Update existing request for this shipment
+    //Update existing request for this shipment
     await requestModel.findOneAndUpdate(
         {
             shipment_id: shipmentid,
@@ -341,7 +341,7 @@ app.post('/create-request', async (req, res) => {
         }
     );
 
-    // 🔹 Redirect to add-shipment page
+    // Redirect to add-shipment page
     res.redirect(`/add-shipment/${warehouseid}`);
 });
 //Track Shipment Status for warehouse
