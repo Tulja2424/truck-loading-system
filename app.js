@@ -1,9 +1,14 @@
 const express = require('express');
 const path = require('path');
 const app = express();
+
+const connectDB = require('./config/db');
+connectDB();
+
 const truckDealer=require('./models/dealer');
 const truckModel=require('./models/truck');
 const warehouseUser=require('./models/warehouse');
+
 const cookieParser = require('cookie-parser');
 const mongoose=require('mongoose');
 const shipmentModel=require('./models/shipment');
