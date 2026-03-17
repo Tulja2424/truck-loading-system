@@ -19,7 +19,7 @@ const jwt = require('jsonwebtoken');
 
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
-app.use(express.static(path.join(__dirname, 'public')));
+
 
 // Home page - role selection
 app.get('/', (req, res) => {
@@ -81,7 +81,7 @@ app.post('/login', async (req, res) => {
     if (user) {
         bcrypt.compare(password, user.password, (err, result) => {
             if (result) {
-                let token = jwt.sign({ license: user.license },process.env.JWT_SECRET);
+                let token = jwt.sign({ license: user.license },process.env.JWT_SECRET,{ expiresIn: "1d" });
                 res.cookie('token', token);
                 return res.redirect(`/profile-dealer/${user._id}`);
             } else {
@@ -96,7 +96,7 @@ app.post('/login', async (req, res) => {
     if (user) {
         bcrypt.compare(password, user.password, (err, result) => {
             if (result) {
-                let token = jwt.sign({ license: user.license },process.env.JWT_SECRET);
+                let token = jwt.sign({ license: user.license },process.env.JWT_SECRET,{ expiresIn: "1d" });
                 res.cookie('token', token);
                 return res.redirect(`/profile-warehouse/${user._id}`);
             } else {
