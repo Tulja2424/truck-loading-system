@@ -8,6 +8,7 @@ const cookieParser = require('cookie-parser');
 const mongoose=require('mongoose');
 const shipmentModel=require('./models/shipment');
 const requestModel=require('./models/request');
+const PORT = process.env.PORT || 3000;
 
 app.use(cookieParser());
 app.use(express.json());
@@ -435,4 +436,6 @@ app.post('/edit-truck/:dealerid/:truckid', async(req,res)=>{
 
     res.redirect(`/view-trucks/${dealerid}`);
 });
-app.listen(3000, () => console.log('Server running on port 3000'));
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+});
